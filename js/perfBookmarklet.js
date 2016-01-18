@@ -14,7 +14,7 @@ window.performanceMeasureBookmarklet = {
     }
   },
 
-  _buildCloseButton($container) {
+  _buildCloseButton: function($container) {
     var $closeButton = $('<button>close</button>');
 
     $closeButton.on('click', function() {
@@ -25,9 +25,8 @@ window.performanceMeasureBookmarklet = {
   },
 
   _setupHTML: function() {
-    console.log('setting up html');
     var $container = $('<div id="perfBookmarklet"></div>');
-    var $canvas = $('<canvas id="perfChart"></canvas>');
+    var $chart = $('<div id="perfChart"></canvas>');
 
     $container.css({
       'z-index': 99999,
@@ -35,70 +34,111 @@ window.performanceMeasureBookmarklet = {
       top: '2%',
       left: '2%',
       width: '96%',
-      height: '300px',
       background: '#fff',
       border: '1px solid #888',
       padding: '10px',
     });
 
-    $container.append($canvas);
+    $container.append($chart);
     this._buildCloseButton($container)
     $('body').append($container);
   },
 
-  _getData() {
+  _getData: function() {
     var measures = _.filter(window.performance.getEntries(), {
           entryType: 'measure',
         });
-    var data = {
-          labels: [],
-          datasets: [
-            {
-              label: 'Performance.measures',
-              fillColor: 'rgba(151,187,205,0.5)',
-              strokeColor: 'rgba(151,187,205,0.8)',
-              highlightFill: 'rgba(151,187,205,0.75)',
-              highlightStroke: 'rgba(151,187,205,1)',
-              data: [],
-            },
-          ],
-        };
+    var data = [];
 
     measures.forEach(function(measure) {
-      data.labels.push(measure.name);
-      data.datasets[0].data.push(measure.duration);
+      data.push({
+        label: measure.name,
+        duration: measure.duration,
+        start: measure.startTime,
+      });
     });
 
     return data;
   },
 
-  _drawChart(data) {
-    var $canvas = $('#perfChart');
-    var ctx = $canvas[0].getContext('2d');
-    var perfChart;
+  _getScale: function(data, $item) {
+    var max = _.max(data, function(o) { return o.start + o.duration; });
 
-    $canvas.css({
-      width: data.labels.length * 60,
-      height: '100%',
-    });
+    return (max.start + max.duration) / $item.width();
+  },
 
-    perfChart = new Chart(ctx).Bar(data);
+  _displayTime: function(time) {
+    return parseInt(time, 10);
+  },
+
+  _drawChart: function(data) {
+    var self = this;
+    var $itemWrapper;
+    var $item;
+    var $duration;
+    var $label;
+    var $chart = $('#perfChart');
+    var scale;
+
+    _.forEach(data, function(item, index) {
+      $itemWrapper = $('<div class="itemWrapper"></div>');
+
+      $item = $('<span class="item-bar"></span>');
+      $item.css({
+        display: 'inline-block',
+        background: '#eee',
+        height: '14px',
+        marginTop: '3px',
+        width: '80%',
+      });
+      $itemWrapper.append($item);
+      $chart.append($itemWrapper);
+      scale = self._getScale(data, $item);
+
+      $active = $('<span class="item-bar--active">' + self._displayTime(item.start) + 'ms</span>');
+
+      $active.css({
+        color: '#fff',
+        fontSize: '.7em',
+        display: 'inline-block',
+        background: '#97bbcd',
+        height: '100%',
+        paddingLeft: '2px',
+        top: '-4px',
+        width: item.duration / scale + 'px',
+        left: item.start / scale + 'px',
+        position: 'relative',
+      });
+      $item.append($active);
+
+      $duration = $('<span class="duration">' + self._displayTime(item.duration) + 'ms</span>');
+      $duration.css({
+        fontSize: '0.8em',
+        color: '#888',
+        padding: '0 5px',
+      });
+      $itemWrapper.append($duration);
+
+      $label = $('<span class="label">' + item.label + '</span>');
+      $itemWrapper.append($label);
+
+    })
+  },
+
+  _setupEvents: function() {
+    var data = performanceMeasureBookmarklet._getData();
+    performanceMeasureBookmarklet._drawChart(data);
   },
 
   init: function() {
-    var chartjs = this._loadScript(
-      '//cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js', 'Chart');
+    var self = this;
     this._loadScript(
       '//cdnjs.cloudflare.com/ajax/libs/lodash.js/4.0.0/lodash.min.js', '_');
     this._loadScript(
       '//cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js', '$');
+
     this._setupHTML();
-
-    $(chartjs).on('load', function() {
-      var data = performanceMeasureBookmarklet._getData();
-      performanceMeasureBookmarklet._drawChart(data);
-    });
-
+    this._setupEvents();
   },
 };
 
