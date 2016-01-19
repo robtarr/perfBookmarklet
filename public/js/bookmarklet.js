@@ -1,0 +1,1 @@
+javascript:%20(function%20()%20{var%20jsCode%20=%20document.createElement(%27script%27);jsCode.setAttribute(%27src%27,%20%27http://localhost:8008/js/perfBookmarklet.bundle.js%27);document.body.appendChild(jsCode);}());

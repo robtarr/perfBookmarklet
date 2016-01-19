@@ -1,0 +1,8 @@
+{
+  "maximumLineLength": {
+    "value": 120,
+    "tabSize": 2,
+    "allowUrlComments": true,
+    "allowRegex": true
+  }
+}

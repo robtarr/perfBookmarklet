@@ -1,0 +1,14 @@
+<div class="perfBookmarklet">
+  <button class="close-button">close</button>
+  <div class="perfChart">
+    {{#each .}}
+      <div class="item-wrapper">
+        <span class="item-bar">
+          <span class="item-bar--active">{{start}}ms</span>
+        </span>
+        <span class="duration">{{duration}}ms</span>
+        <span class="label">{{label}}</span>
+      </div>
+    {{/each}}
+  </div>
+</div>

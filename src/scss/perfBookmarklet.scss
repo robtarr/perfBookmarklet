@@ -1,0 +1,45 @@
+.perfBookmarklet {
+  z-index: 99999;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  border: 1px solid #eee;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .close-button {
+    right: 0;
+    background: #eee;
+    font-size: .7em;
+    border-radius: 3px;
+    border: 1px solid #eee;
+  }
+
+  .item-bar {
+    display: inline-block;
+    background: #eee;
+    height: 14px;
+    margin-top: 3px;
+    width: 80%;
+  }
+
+  .item-bar--active {
+    color: #fff;
+    font-size: .7em;
+    display: inline-block;
+    background: #97bbcd;
+    height: 100%;
+    padding-left: 2px;
+    top: -4px;
+    position: relative;
+  }
+
+  .duration {
+    font-size: 0.8em;
+    color: #888;
+    padding: 0 5px;
+  }
+
+}
