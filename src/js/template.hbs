@@ -1,13 +1,20 @@
 <div class="perfBookmarklet">
-  <button class="close-button">close</button>
-  <div class="perfChart">
+  <button class="perfBookmarklet--close-button">close</button>
+  <label>
+    Filter:
+    <input type="text" class="perfBookmarklet--filter"></input>
+  </label>
+  <button class="perfBookmarklet--dock">Dock</button>
+  <div class="perfBookmarklet--perfChart">
     {{#each .}}
-      <div class="item-wrapper">
-        <span class="item-bar">
-          <span class="item-bar--active">{{start}}ms</span>
+      <div class="perfBookmarklet--item-wrapper">
+        <span class="perfBookmarklet--label">{{label}}</span>
+        <span class="perfBookmarklet--item-bar">
+          <span class="perfBookmarklet--item-bar--active">
+            <span class="perfBookmarklet--start">{{start}}ms</span>
+            {{#if duration}}{{duration}}ms{{/if}}
+          </span>
         </span>
-        <span class="duration">{{duration}}ms</span>
-        <span class="label">{{label}}</span>
       </div>
     {{/each}}
   </div>

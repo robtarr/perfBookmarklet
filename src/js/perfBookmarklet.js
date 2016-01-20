@@ -10,31 +10,35 @@ import _forEach from 'lodash/forEach';
 
 window.performanceMeasureBookmarklet = {
   getData: function() {
-    const measures = _filter(window.performance.getEntries(), {
-          entryType: 'measure',
-        });
+    const entries = _filter(window.performance.getEntries(), function(entry) {
+      return entry.entryType === 'measure' || entry.entryType === 'mark';
+    });
 
     this.data = [];
 
-    _forEach(measures, (measure) => {
+    _forEach(entries, (entry) => {
       this.data.push({
-        label: measure.name,
-        duration: parseInt(measure.duration, 10),
-        start: parseInt(measure.startTime, 10),
+        label: entry.name,
+        type: entry.entryType,
+        duration: parseInt(entry.duration, 10),
+        start: parseInt(entry.startTime, 10),
       });
     });
   },
 
   createHTML: function() {
-    $('body').append(template(this.data));
+    $('body').prepend(template(this.data));
 
-    this.setScale();
     this.setBarPositions();
   },
 
   setupEvents: function() {
-    $('.perfBookmarklet .close-button').on('click', function(e) {
+    $('.perfBookmarklet--close-button').on('click', function(e) {
       $(e.target).closest('.perfBookmarklet').remove();
+    });
+
+    $('.perfBookmarklet--dock').on('click', function(e) {
+      $('.perfBookmarklet').toggleClass('docked');
     });
   },
 
@@ -42,22 +46,20 @@ window.performanceMeasureBookmarklet = {
     return num / this.max * 100;
   },
 
-  setScale: function() {
+  setMax: function() {
     var max = _maxBy(this.data, function(o) {
       return o.start + o.duration;
     });
 
-    this.scale = (max.start + max.duration) / $('.item-bar').width();
     this.max = max.start + max.duration;
   },
 
   setBarPositions: function() {
-    let $bars = $('.perfBookmarklet .item-bar--active');
+    let $bars = $('.perfBookmarklet--item-bar--active');
     let self = this;
 
+    this.setMax();
     $bars.each(function(index, bar) {
-      console.log('width: ', self.convertToPercent(self.data[index].duration) + '%');
-      console.log('left: ', self.convertToPercent(self.data[index].start) + '%');
       $(bar).css({
         width: self.convertToPercent(self.data[index].duration) + '%',
         left: self.convertToPercent(self.data[index].start) + '%',
@@ -66,7 +68,6 @@ window.performanceMeasureBookmarklet = {
   },
 
   init: function() {
-    // this.handlebarsHelperInit();
     this.getData();
     this.createHTML();
     this.setupEvents();

@@ -8,38 +8,59 @@
   border: 1px solid #eee;
   padding: 10px;
   box-sizing: border-box;
+  max-height: 300px;
+  overflow: scroll;
 
-  .close-button {
-    right: 0;
-    background: #eee;
-    font-size: .7em;
-    border-radius: 3px;
-    border: 1px solid #eee;
-  }
-
-  .item-bar {
-    display: inline-block;
-    background: #eee;
-    height: 14px;
-    margin-top: 3px;
-    width: 80%;
-  }
-
-  .item-bar--active {
-    color: #fff;
-    font-size: .7em;
-    display: inline-block;
-    background: #97bbcd;
-    height: 100%;
-    padding-left: 2px;
-    top: -4px;
+  &.docked {
     position: relative;
   }
+}
 
-  .duration {
-    font-size: 0.8em;
-    color: #888;
-    padding: 0 5px;
-  }
+.perfBookmarklet--close-button {
+  right: 0;
+  background: #eee;
+  font-size: .7em;
+  border-radius: 3px;
+  border: 1px solid #eee;
+}
 
+.perfBookmarklet--dock {
+  background: #bbb;
+  font-size: .7em;
+  border-radius: 3px;
+  border: 1px solid #eee;
+}
+
+.perfBookmarklet--item-bar {
+  display: inline-block;
+  background: #eee;
+  height: 14px;
+  margin-top: 3px;
+  width: 80%;
+  box-sizing: border-box;
+}
+
+.perfBookmarklet--item-bar--active {
+  color: #fff;
+  font-size: .7em;
+  display: inline-block;
+  background: #97bbcd;
+  height: 100%;
+  padding-left: 2px;
+  top: -4px;
+  position: relative;
+}
+
+.perfBookmarklet--start {
+  font-size: 0.8em;
+  color: #888;
+  padding: 0 5px;
+}
+
+.perfBookmarklet--label {
+  font-size: .8em;
+  color: #555;
+  width: 15%;
+  display: inline-flex;
+  box-sizing: border-box;
 }
