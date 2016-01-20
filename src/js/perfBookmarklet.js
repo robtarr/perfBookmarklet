@@ -40,6 +40,8 @@ window.performanceMeasureBookmarklet = {
     $('.perfBookmarklet--dock').on('click', function(e) {
       $('.perfBookmarklet').toggleClass('docked');
     });
+
+    $('.perfBookmarklet--filter').on('keyup', this.filter);
   },
 
   convertToPercent: function(num) {
@@ -64,6 +66,20 @@ window.performanceMeasureBookmarklet = {
         width: self.convertToPercent(self.data[index].duration) + '%',
         left: self.convertToPercent(self.data[index].start) + '%',
       });
+    });
+  },
+
+  filter: function(e) {
+    var filter = new RegExp(e.target.value.toLowerCase());
+
+    $('.perfBookmarklet--label').each(function() {
+      var $this = $(this);
+
+      if (filter.test($this.text().toLowerCase())) {
+        $this.closest('.perfBookmarklet--item-wrapper').fadeIn();
+      } else {
+        $this.closest('.perfBookmarklet--item-wrapper').fadeOut();
+      }
     });
   },
 
