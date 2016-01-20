@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "webpack -w"
+    "dev": "http-server ./dist -p 8008 && webpack -w"
   },
   "author": "",
   "license": "ISC",
@@ -21,6 +21,7 @@
     "css-loader": "^0.23.1",
     "handlebars": "^4.0.5",
     "handlebars-loader": "^1.1.4",
+    "http-server": "^0.8.5",
     "jquery": "^2.2.0",
     "lodash": "^4.0.0",
     "node-sass": "^3.4.2",
