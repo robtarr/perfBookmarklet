@@ -7,11 +7,11 @@
   <button class="perfBookmarklet--dock">Dock</button>
   <div class="perfBookmarklet--perfChart">
     {{#each .}}
-      <div class="perfBookmarklet--item-wrapper">
+      <div class="perfBookmarklet--item-wrapper perfBookmarklet--{{type}}">
+        <span class="perfBookmarklet--start">{{start}}ms</span>
         <span class="perfBookmarklet--label">{{label}}</span>
         <span class="perfBookmarklet--item-bar">
           <span class="perfBookmarklet--item-bar--active">
-            <span class="perfBookmarklet--start">{{start}}ms</span>
             {{#if duration}}{{duration}}ms{{/if}}
           </span>
         </span>

@@ -1,6 +1,6 @@
 .perfBookmarklet {
   z-index: 99999;
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -35,8 +35,7 @@
   display: inline-block;
   background: #eee;
   height: 14px;
-  margin-top: 3px;
-  width: 80%;
+  width: 100%;
   box-sizing: border-box;
 }
 
@@ -44,23 +43,35 @@
   color: #fff;
   font-size: .7em;
   display: inline-block;
-  background: #97bbcd;
   height: 100%;
   padding-left: 2px;
   top: -4px;
   position: relative;
+
+  .perfBookmarklet--measure & {
+    background: #97bbcd;
+  }
+
+  .perfBookmarklet--mark & {
+    background: #6aad6a;
+  }
 }
 
 .perfBookmarklet--start {
-  font-size: 0.8em;
+  font-size: 0.6em;
   color: #888;
-  padding: 0 5px;
 }
 
 .perfBookmarklet--label {
-  font-size: .8em;
-  color: #555;
-  width: 15%;
+  font-size: 0.7em;
   display: inline-flex;
   box-sizing: border-box;
+
+  .perfBookmarklet--measure & {
+    color: #97bbcd;
+  }
+
+  .perfBookmarklet--mark & {
+    color: #6aad6a;
+  }
 }

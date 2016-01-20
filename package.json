@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "watch": "babel -w src -d dist/ src/"
+    "watch": "webpack -w"
   },
   "author": "",
   "license": "ISC",
